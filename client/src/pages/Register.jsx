@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import {toast} from "react-hot-toast";
+import {useNavigate} from "react-router-dom";
 import starting from "../assets/working.jpg";
+import api from "../config/api.jsx";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [registerData, setRegisterData] = useState({
     fullName: "",
     email: "",
+    phone:"",
     password: "",
     confirmPassword: "",
   });
@@ -28,6 +32,13 @@ const Register = () => {
       err.fullName = "Only Alphabets are allowed";
       isvalid = false;
     }
+      if (
+      !/^[6-9]\d{9}$/.test(registerData.phone) ||
+      registerData.phone.length !== 10
+    ) {
+      err.phone = "Please enter a valid Phone Number";
+      isvalid = false;
+    }
     if ( !/^[A-Za-z\d._]+@gmail.com$/.test(registerData.email) || registerData.email.length < 10 ) {
       err.email = "Please enter a Valid Email";
       isvalid = false;
@@ -44,7 +55,7 @@ const Register = () => {
     return isvalid;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -53,17 +64,37 @@ const Register = () => {
       toast.error("Please Solve the Errors");
       return;
     }
-    setTimeout(() => {
-      console.log(registerData);
+    // setTimeout(() => {
+    //   console.log(registerData);
+    //   setRegisterData({
+    //     fullName: "",
+    //     email: "",
+    //     password: "",
+    //     confirmPassword: "",
+    //   });
+    //   setLoading(false);
+    //   toast.success("Registration Sucessfull");
+    // }, 2000);
+
+        try {
+      const res = await api.post("/auth/register", registerData);
+      toast.success(res.data.message);
       setRegisterData({
         fullName: "",
         email: "",
+        phone: "",
         password: "",
         confirmPassword: "",
       });
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        `Error : ${error.response?.status} | ${error.response?.data?.message}`
+      );
+    } finally {
       setLoading(false);
-      toast.success("Registration Sucessfull");
-    }, 2000);
+    }
   };
 
  return (
@@ -122,6 +153,25 @@ const Register = () => {
             />
             {error.email && (
               <p className="text-red-500 text-xs mt-1">{error.email}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-gray-600 text-sm mb-1" htmlFor="email">
+              Phone
+            </label>
+            <input
+              type="tel"
+              name="phone"
+              id="phone"
+              value={registerData.phone}
+              onChange={handleChange}
+              placeholder="9876543210"
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              required
+            />
+            {error.phone && (
+              <p className="text-red-500 text-xs mt-1">{error.phone}</p>
             )}
           </div>
 

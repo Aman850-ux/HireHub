@@ -1,23 +1,45 @@
 import React, { useState } from "react";
 
+import api from "../config/api";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+
 const Login = () => {
+  const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
   });
+
+  const [loading, setLoading]= useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLoginData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     console.log(loginData);
-    setLoginData({
-      email: "",
-      password: "",
-    });
+   
+      try {
+      const res = await api.post("/auth/login", loginData);
+      toast.success(res.data.message);
+      sessionStorage.setItem("userData", JSON.stringify(res.data.data));
+      setLoginData({
+        email: "",
+        password: "",
+      });
+      navigate("/dashboard");
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        `Error : ${error.response?.status} | ${error.response?.data?.message}`
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
