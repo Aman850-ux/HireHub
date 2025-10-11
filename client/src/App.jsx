@@ -1,19 +1,21 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import {Toaster} from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+
 import UserDashbaord from "./pages/UserDashbaord";
+import RecruiterDashboard from "./pages/RecruiterDashboard";
 
 const App = () => {
   return (
     <>
       <BrowserRouter>
-      <Toaster />
+        <Toaster />
         <Navbar />
         <Routes>
           <Route path={"/"} element={<Home />} />
@@ -21,8 +23,11 @@ const App = () => {
           <Route path={"/contact"} element={<Contact />} />
           <Route path={"/login"} element={<Login />} />
           <Route path={"/register"} element={<Register />} />
-            <Route path={"/userDashboard"} element={<UserDashbaord />} />
-          
+          <Route path={"/userDashboard"} element={<UserDashbaord />} />
+          <Route
+            path={"/recruiterDashboard"}
+            element={<RecruiterDashboard />}
+          />
         </Routes>
       </BrowserRouter>
     </>

@@ -1,15 +1,16 @@
 import React, { useState } from "react";
-import {toast} from "react-hot-toast";
-import {useNavigate} from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import starting from "../assets/working.jpg";
 import api from "../config/api.jsx";
 
 const Register = () => {
   const navigate = useNavigate();
   const [registerData, setRegisterData] = useState({
+    role: "",
     fullName: "",
     email: "",
-    phone:"",
+    phone: "",
     password: "",
     confirmPassword: "",
   });
@@ -24,6 +25,11 @@ const Register = () => {
   const Validate = () => {
     let isvalid = true;
     const err = {};
+
+    if (!registerData.role) {
+      err.role = "Please select a Role";
+      isvalid = false;
+    }
     if (registerData.fullName.length < 3) {
       err.fullName = "Name should be of Atlest 3 Characters";
       isvalid = false;
@@ -32,18 +38,25 @@ const Register = () => {
       err.fullName = "Only Alphabets are allowed";
       isvalid = false;
     }
-      if (
+    if (
       !/^[6-9]\d{9}$/.test(registerData.phone) ||
       registerData.phone.length !== 10
     ) {
       err.phone = "Please enter a valid Phone Number";
       isvalid = false;
     }
-    if ( !/^[A-Za-z\d._]+@gmail.com$/.test(registerData.email) || registerData.email.length < 10 ) {
+    if (
+        !/^[A-Za-z\d]+@[A-Za-z]+.[A-Za-z.]+$/.test(registerData.email) ||
+      registerData.email.length < 10
+    ) {
       err.email = "Please enter a Valid Email";
       isvalid = false;
     }
-    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/.test( registerData.password)) {
+    if (
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/.test(
+        registerData.password
+      )
+    ) {
       err.password = "Please choose a Strong Password";
       isvalid = false;
     }
@@ -64,6 +77,7 @@ const Register = () => {
       toast.error("Please Solve the Errors");
       return;
     }
+
     // setTimeout(() => {
     //   console.log(registerData);
     //   setRegisterData({
@@ -76,7 +90,7 @@ const Register = () => {
     //   toast.success("Registration Sucessfull");
     // }, 2000);
 
-        try {
+    try {
       const res = await api.post("/auth/register", registerData);
       toast.success(res.data.message);
       setRegisterData({
@@ -97,135 +111,176 @@ const Register = () => {
     }
   };
 
- return (
-  <section className="min-h-[80vh] flex items-center justify-center bg-gray-50 px-4">
-    <div className="w-full max-w-3xl bg-white rounded-xl shadow-md p-8 flex flex-col md:flex-row gap-8">
-      
-      <div className="hidden md:block w-1/2">
-        <img
-          src={starting}
-          alt="Register"
-          className="w-full h-full object-cover rounded-lg"
-        />
+  return (
+    <section className="min-h-[80vh] flex items-center justify-center bg-gray-50 px-4">
+      <div className="w-full max-w-3xl bg-white rounded-xl shadow-md p-8 flex flex-col md:flex-row gap-8">
+        <div className="hidden md:block w-1/2">
+          <img
+            src={starting}
+            alt="Register"
+            className="w-full h-full object-cover rounded-lg"
+          />
+        </div>
+
+        <div className="flex-1">
+          <h1 className="font-bold text-3xl mb-6 text-gray-800">
+            Create an Account
+          </h1>
+          <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
+            <div className="flex">
+              <label
+                className="block text-gray-700 font-semibold mb-1"
+                htmlFor="role"
+              >
+                Role
+              </label>
+              <div className="flex gap-3 items-center ml-4">
+                <input
+                  type="radio"
+                  name="role"
+                  id="applicant"
+                  value={"applicant"}
+                  onChange={handleChange}
+                />
+                <label htmlFor="applicant">Applicant</label>
+                <input
+                  type="radio"
+                  name="role"
+                  id="recruiter"
+                  value={"recruiter"}
+                  onChange={handleChange}
+                />
+                <label htmlFor="recruiter">Recruiter</label>
+              </div>
+              {error.role && (
+                <p className="text-red-500 text-sm mt-1">{error.role}</p>
+              )}
+            </div>
+
+            <div>
+              <label
+                className="block text-gray-600 text-sm mb-1"
+                htmlFor="fullName"
+              >
+                Full Name
+              </label>
+              <input
+                type="text"
+                name="fullName"
+                id="fullName"
+                value={registerData.fullName}
+                onChange={handleChange}
+                placeholder="John Doe"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                required
+              />
+              {error.fullName && (
+                <p className="text-red-500 text-xs mt-1">{error.fullName}</p>
+              )}
+            </div>
+
+            <div>
+              <label
+                className="block text-gray-600 text-sm mb-1"
+                htmlFor="email"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                value={registerData.email}
+                onChange={handleChange}
+                placeholder="you@email.com"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                required
+              />
+              {error.email && (
+                <p className="text-red-500 text-xs mt-1">{error.email}</p>
+              )}
+            </div>
+
+            <div>
+              <label
+                className="block text-gray-600 text-sm mb-1"
+                htmlFor="email"
+              >
+                Phone
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                id="phone"
+                value={registerData.phone}
+                onChange={handleChange}
+                placeholder="9876543210"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                required
+              />
+              {error.phone && (
+                <p className="text-red-500 text-xs mt-1">{error.phone}</p>
+              )}
+            </div>
+
+            <div>
+              <label
+                className="block text-gray-600 text-sm mb-1"
+                htmlFor="password"
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                value={registerData.password}
+                onChange={handleChange}
+                placeholder="********"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                required
+              />
+              {error.password && (
+                <p className="text-red-500 text-xs mt-1">{error.password}</p>
+              )}
+            </div>
+
+            <div>
+              <label
+                className="block text-gray-600 text-sm mb-1"
+                htmlFor="confirmPassword"
+              >
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                name="confirmPassword"
+                id="confirmPassword"
+                value={registerData.confirmPassword}
+                onChange={handleChange}
+                placeholder="********"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                required
+              />
+              {error.confirmPassword && (
+                <p className="text-red-500 text-xs mt-1">
+                  {error.confirmPassword}
+                </p>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              className="bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50"
+              disabled={loading}
+            >
+              {loading ? "Registering..." : "Register"}
+            </button>
+          </form>
+        </div>
       </div>
-
-    
-      <div className="flex-1">
-        <h1 className="font-bold text-3xl mb-6 text-gray-800">
-          Create an Account
-        </h1>
-        <form
-          className="flex flex-col gap-5"
-          onSubmit={handleSubmit}
-        >
-          <div>
-            <label className="block text-gray-600 text-sm mb-1" htmlFor="fullName">
-              Full Name
-            </label>
-            <input
-              type="text"
-              name="fullName"
-              id="fullName"
-              value={registerData.fullName}
-              onChange={handleChange}
-              placeholder="John Doe"
-              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-              required
-            />
-            {error.fullName && (
-              <p className="text-red-500 text-xs mt-1">{error.fullName}</p>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-gray-600 text-sm mb-1" htmlFor="email">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              value={registerData.email}
-              onChange={handleChange}
-              placeholder="you@email.com"
-              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-              required
-            />
-            {error.email && (
-              <p className="text-red-500 text-xs mt-1">{error.email}</p>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-gray-600 text-sm mb-1" htmlFor="email">
-              Phone
-            </label>
-            <input
-              type="tel"
-              name="phone"
-              id="phone"
-              value={registerData.phone}
-              onChange={handleChange}
-              placeholder="9876543210"
-              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-              required
-            />
-            {error.phone && (
-              <p className="text-red-500 text-xs mt-1">{error.phone}</p>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-gray-600 text-sm mb-1" htmlFor="password">
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              value={registerData.password}
-              onChange={handleChange}
-              placeholder="********"
-              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-              required
-            />
-            {error.password && (
-              <p className="text-red-500 text-xs mt-1">{error.password}</p>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-gray-600 text-sm mb-1" htmlFor="confirmPassword">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              name="confirmPassword"
-              id="confirmPassword"
-              value={registerData.confirmPassword}
-              onChange={handleChange}
-              placeholder="********"
-              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-              required
-            />
-            {error.confirmPassword && (
-              <p className="text-red-500 text-xs mt-1">{error.confirmPassword}</p>
-            )}
-          </div>
-
-          <button
-            type="submit"
-            className="bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50"
-            disabled={loading}
-          >
-            {loading ? "Registering..." : "Register"}
-          </button>
-        </form>
-      </div>
-    </div>
-  </section>
-);
-
+    </section>
+  );
 };
 
 export default Register;
