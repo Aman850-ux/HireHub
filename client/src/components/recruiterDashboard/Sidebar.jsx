@@ -1,5 +1,6 @@
 import React from "react";
 import { FcHome, FcManager, FcDocument } from "react-icons/fc";
+import { GiSuitcase } from "react-icons/gi";
 import api from "../../config/api";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -8,11 +9,12 @@ import { useAuth } from "../../context/AuthContext";
 const navItems = [
   { value: "overview", text: "Overview", icons: <FcHome /> },
   { value: "profile", text: "Profile", icons: <FcManager /> },
-  { value: "application", text: "Application", icons: <FcDocument /> },
+  { value: "jobs", text: "Jobs", icons: <GiSuitcase /> },
+  { value: "applicant", text: "Applicants", icons: <FcDocument /> },
 ];
 
-const SideBar = ({ active, setActive }) => {
-  const { setUser, setIsLogin } = useAuth();
+const Sidebar = ({ active, setActive }) => {
+  const { setUser, setIsLogin, setIsRecruiter } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -22,6 +24,7 @@ const SideBar = ({ active, setActive }) => {
       sessionStorage.removeItem("userData");
       setUser("");
       setIsLogin(false);
+      setIsRecruiter(false);
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -61,7 +64,7 @@ const SideBar = ({ active, setActive }) => {
         <div>
           <h1 className="text-lg border-b-2 border-[var(--background)] text-center text-[var(--text)] font-bold">
             {" "}
-            User Dashbaord
+            Recruiter Dashbaord
           </h1>
 
           <div>
@@ -95,4 +98,4 @@ const SideBar = ({ active, setActive }) => {
   );
 };
 
-export default SideBar;
+export default Sidebar;

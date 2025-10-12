@@ -8,16 +8,12 @@ const userSchema = mongoose.Schema(
     },
     email: {
       type: String,
-      required: function () {
-        return this.role === "applicant";
-      },
+      required: true,
       unique: true,
     },
     phone: {
       type: String,
-      required: function () {
-        return this.role === "applicant";
-      },
+      required: true,
     },
     password: {
       type: String,
@@ -43,29 +39,39 @@ const userSchema = mongoose.Schema(
     },
     address: {
       type: String,
-      required: true,
-      default: "N/A",
+      required: function () {
+        return this.role === "applicant";
+      },
+      default: function () {
+        return this.role === "applicant" ? "N/A" : undefined;
+      },
     },
     exp: {
       type: String,
       required: function () {
         return this.role === "applicant";
       },
-      default: "0",
+      default: function () {
+        return this.role === "applicant" ? "N/A" : undefined;
+      },
     },
     qualification: {
       type: String,
       required: function () {
         return this.role === "applicant";
       },
-      default: "N/A",
+      default: function () {
+        return this.role === "applicant" ? "N/A" : undefined;
+      },
     },
     bio: {
       type: String,
       required: function () {
         return this.role === "applicant";
       },
-      default: "N/A",
+      default: function () {
+        return this.role === "applicant" ? "N/A" : undefined;
+      },
     },
     linkedin: {
       type: String,
@@ -77,7 +83,9 @@ const userSchema = mongoose.Schema(
       required: function () {
         return this.role === "applicant";
       },
-      default: "N/A",
+      default: function () {
+        return this.role === "applicant" ? "N/A" : undefined;
+      },
     },
     insta: {
       type: String,
@@ -100,7 +108,9 @@ const userSchema = mongoose.Schema(
       required: function () {
         return this.role === "applicant";
       },
-      default: "N/A",
+      default: function () {
+        return this.role === "applicant" ? "N/A" : undefined;
+      },
     },
 
     role: {
@@ -114,63 +124,81 @@ const userSchema = mongoose.Schema(
       required: function () {
         return this.role === "recruiter";
       },
-      default: "N/A",
+      default: function () {
+        return this.role === "recruiter" ? "N/A" : undefined;
+      },
     },
     companyAddress: {
       type: String,
       required: function () {
         return this.role === "recruiter";
       },
-      default: "N/A",
+      default: function () {
+        return this.role === "recruiter" ? "N/A" : undefined;
+      },
     },
     companyEmail: {
       type: String,
       required: function () {
         return this.role === "recruiter";
       },
-      default: "N/A",
+      default: function () {
+        return this.role === "recruiter" ? "N/A" : undefined;
+      },
     },
     companyPhone: {
       type: String,
       required: function () {
         return this.role === "recruiter";
       },
-      default: "N/A",
+      default: function () {
+        return this.role === "recruiter" ? "N/A" : undefined;
+      },
     },
     companyWebsite: {
       type: String,
       required: function () {
         return this.role === "recruiter";
       },
-      default: "N/A",
+      default: function () {
+        return this.role === "recruiter" ? "N/A" : undefined;
+      },
     },
     companyDescription: {
       type: String,
       required: function () {
         return this.role === "recruiter";
       },
-      default: "N/A",
+      default: function () {
+        return this.role === "recruiter" ? "N/A" : undefined;
+      },
     },
     companyDetail: {
       type: String,
       required: function () {
         return this.role === "recruiter";
       },
-      default: "N/A",
+      default: function () {
+        return this.role === "recruiter" ? "N/A" : undefined;
+      },
     },
     companySince: {
       type: String,
       required: function () {
         return this.role === "recruiter";
       },
-      default: "N/A",
+      default: function () {
+        return this.role === "recruiter" ? "N/A" : undefined;
+      },
     },
     companyEmployees: {
       type: String,
       required: function () {
         return this.role === "recruiter";
       },
-      default: "N/A",
+      default: function () {
+        return this.role === "recruiter" ? "N/A" : undefined;
+      },
     },
   },
   { timestamps: true }

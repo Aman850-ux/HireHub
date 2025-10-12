@@ -8,7 +8,7 @@ import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
-import UserDashbaord from "./pages/UserDashbaord";
+import ApplicantDashbaord from "./pages/ApplicantDashbaord";
 import RecruiterDashboard from "./pages/RecruiterDashboard";
 
 const App = () => {
@@ -23,7 +23,10 @@ const App = () => {
           <Route path={"/contact"} element={<Contact />} />
           <Route path={"/login"} element={<Login />} />
           <Route path={"/register"} element={<Register />} />
-          <Route path={"/userDashboard"} element={<UserDashbaord />} />
+          <Route
+            path={"/applicantDashboard"}
+            element={<ApplicantDashbaord />}
+          />
           <Route
             path={"/recruiterDashboard"}
             element={<RecruiterDashboard />}

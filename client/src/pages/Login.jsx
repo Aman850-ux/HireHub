@@ -6,14 +6,14 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
-   const { setUser, setIsLogin, setIsrecruiter } = useAuth();
+  const { setUser, setIsLogin, setIsRecruiter } = useAuth();
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
   });
 
-  const [loading, setLoading]= useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,19 +24,21 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     console.log(loginData);
-   
-      try {
+
+    try {
       const res = await api.post("/auth/login", loginData);
       toast.success(res.data.message);
       sessionStorage.setItem("userData", JSON.stringify(res.data.data));
-        setIsLogin(true);
+      setIsLogin(true);
       setUser(res.data.data);
-      setIsrecruiter(res.data.data.role === "recruiter");
+      setIsRecruiter(res.data.data.role === "recruiter");
       setLoginData({
         email: "",
         password: "",
       });
-       res.data.data.role === "recruiter"?navigate("/recruiterdashboard"):navigate("/userdashboard");
+      res.data.data.role === "recruiter"
+        ? navigate("/recruiterdashboard")
+        : navigate("/applicantDashboard");
     } catch (error) {
       console.log(error);
       toast.error(
@@ -50,14 +52,11 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-8">
-        
         <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
           Login to <span className="text-blue-600">HireHub</span>
         </h1>
 
-        
         <form onSubmit={handleSubmit} className="space-y-5">
-          
           <div>
             <label htmlFor="email" className="block text-gray-600 mb-1">
               Email
@@ -91,7 +90,7 @@ const Login = () => {
             type="submit"
             className="w-full bg-blue-500 text-white p-3 rounded-lg font-medium shadow-md hover:bg-blue-600 hover:shadow-lg transition-all"
           >
-             {loading ? "Logging in ..." : "Login"}
+            {loading ? "Logging in ..." : "Login"}
           </button>
         </form>
       </div>
