@@ -7,9 +7,11 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Jobs from "./pages/Jobs";
 
 import ApplicantDashbaord from "./pages/ApplicantDashbaord";
 import RecruiterDashboard from "./pages/RecruiterDashboard";
+import JobDetails from "./pages/JobDetails";
 
 const App = () => {
   return (
@@ -23,6 +25,8 @@ const App = () => {
           <Route path={"/contact"} element={<Contact />} />
           <Route path={"/login"} element={<Login />} />
           <Route path={"/register"} element={<Register />} />
+          <Route path={"/job"} element={<Jobs />} />
+          <Route path={"/jobDetails"} element={<JobDetails />} />
           <Route
             path={"/applicantDashboard"}
             element={<ApplicantDashbaord />}
