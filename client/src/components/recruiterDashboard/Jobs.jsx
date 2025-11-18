@@ -1,11 +1,14 @@
 import React from 'react'
 import AddNewJobModal from "./AddNewJobModal";
+import ViewJobModal from "./ViewJobModal";
 import api from "../../config/api";
 
 const Jobs = () => {
     const [jobs, setJobs] = React.useState([]);
 
   const [isAddJobModalOpen, setIsAddJobModalOpen] = React.useState(false);
+ const [isViewJobModalOpen, setIsViewJobModalOpen] = React.useState(false);
+  const [selectedJob, setSelectedJob] = React.useState(null);
 
   const handleAddJob = () => {
   
@@ -43,7 +46,10 @@ const Jobs = () => {
           ) : (
           
             jobs.map((job) => (
-              <div key={job.id} className="border p-4 mb-4 rounded shadow-sm">
+              <div key={job.id} className="border p-4 mb-4 rounded shadow-sm" onClick={() => {
+                  setSelectedJob(job);
+                  setIsViewJobModalOpen(true);
+                }}>
                 <h3 className="text-lg font-semibold">{job.title}</h3>
                 <p className="text-gray-600">{job.company}</p>
               </div>
@@ -55,6 +61,11 @@ const Jobs = () => {
       <AddNewJobModal
         isOpen={isAddJobModalOpen}
         onClose={() => setIsAddJobModalOpen(false)}
+      />
+        <ViewJobModal
+        isOpen={isViewJobModalOpen}
+        onClose={() => setIsViewJobModalOpen(false)}
+        job={selectedJob}
       />
     </>
   );

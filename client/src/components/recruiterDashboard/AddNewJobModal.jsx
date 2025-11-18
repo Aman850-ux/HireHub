@@ -68,12 +68,12 @@ const AddNewJobModal = ({ isOpen, onClose }) => {
     if (!validate()) return;
     setSubmitting(true);
     try {
-      // API call to create job can be added here
+     
 
       const res = await api.post("/recruiter/add-new-job", form);
       toast.success(res.data.message);
       onClose?.();
-      // Reset form after close
+     
       setForm({
         title: "",
         description: "",
@@ -107,7 +107,7 @@ const AddNewJobModal = ({ isOpen, onClose }) => {
           <button
             type="button"
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
+            className="text-gray-500 hover:text-red-500 rounded-full p-3 w-5 h-5 flex items-center justify-center"
             aria-label="Close"
           >
             ✕
@@ -115,7 +115,7 @@ const AddNewJobModal = ({ isOpen, onClose }) => {
         </div>
 
         <form onSubmit={handleSubmit} className="px-6 py-5">
-          {/* Title */}
+       
           <div className="mb-4">
             <label
               className="block text-sm font-medium text-gray-700 mb-1"
@@ -139,7 +139,7 @@ const AddNewJobModal = ({ isOpen, onClose }) => {
             )}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Company */}
+         
             <div>
               <label
                 className="block text-sm font-medium text-gray-700 mb-1"
@@ -163,7 +163,7 @@ const AddNewJobModal = ({ isOpen, onClose }) => {
               )}
             </div>
 
-            {/* Location */}
+       
             <div>
               <label
                 className="block text-sm font-medium text-gray-700 mb-1"
@@ -187,7 +187,7 @@ const AddNewJobModal = ({ isOpen, onClose }) => {
               )}
             </div>
 
-            {/* Salary */}
+           
             <div>
               <label
                 className="block text-sm font-medium text-gray-700 mb-1"
@@ -211,7 +211,7 @@ const AddNewJobModal = ({ isOpen, onClose }) => {
               )}
             </div>
 
-            {/* Job Type */}
+        
             <div>
               <label
                 className="block text-sm font-medium text-gray-700 mb-1"
@@ -242,7 +242,7 @@ const AddNewJobModal = ({ isOpen, onClose }) => {
               )}
             </div>
 
-            {/* Work Type */}
+          
             <div>
               <label
                 className="block text-sm font-medium text-gray-700 mb-1"
@@ -273,7 +273,7 @@ const AddNewJobModal = ({ isOpen, onClose }) => {
               )}
             </div>
 
-            {/* Experience Level */}
+           
             <div>
               <label
                 className="block text-sm font-medium text-gray-700 mb-1"
@@ -306,7 +306,7 @@ const AddNewJobModal = ({ isOpen, onClose }) => {
               )}
             </div>
 
-            {/* No of Openings */}
+     
             <div>
               <label
                 className="block text-sm font-medium text-gray-700 mb-1"
@@ -332,7 +332,6 @@ const AddNewJobModal = ({ isOpen, onClose }) => {
               )}
             </div>
 
-            {/* Last Date To Apply */}
             <div>
               <label
                 className="block text-sm font-medium text-gray-700 mb-1"
@@ -357,7 +356,7 @@ const AddNewJobModal = ({ isOpen, onClose }) => {
               )}
             </div>
 
-            {/* Skills */}
+    
             <div className="md:col-span-2">
               <label
                 className="block text-sm font-medium text-gray-700 mb-1"
@@ -381,7 +380,7 @@ const AddNewJobModal = ({ isOpen, onClose }) => {
               )}
             </div>
 
-            {/* Description */}
+      
             <div className="md:col-span-2">
               <label
                 className="block text-sm font-medium text-gray-700 mb-1"
